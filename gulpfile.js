@@ -8,7 +8,19 @@ var cssnano = require('gulp-cssnano');
 var imagemin = require('gulp-imagemin');
 var cache = require('gulp-cache');
 var del = require('del');
+var runSequence = require('run-sequence');
 
+gulp.task('default', function (callback) {
+    runSequence(['sass', 'browserSync', 'watch'], callback);
+});
+
+gulp.task('build', function (callback) {
+    runSequence(
+        'clean:dist',
+        ['sass', 'useref', 'images', 'fonts'],
+        callback
+    );
+});
 
 gulp.task('watch', ['browserSync', 'sass'], function() {
     gulp.watch('app/scss/**/*.scss', ['sass']);
